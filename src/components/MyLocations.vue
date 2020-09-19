@@ -47,7 +47,10 @@ export default {
 
 <style>
 .locations{
-  background-image: url("../assets/loc_bg.jpg");
+  background-image: url("../assets/cold-bg.jpg");
+  background-size: cover;
+  background-position: bottom;
+  transition: 0.4s;
 }
 * {
   margin: 0;
