@@ -1,5 +1,5 @@
 <template>
-  <div id="ap" :class="typeof  weather.main !='undefined' && weather.main.temp > 15 ? 'warm' : ''">
+  <div id="ap">
     <nav-bar/>
     <main>
       <div class="search-box mt-5">
@@ -9,15 +9,39 @@
                v-model="query"
                @keypress="fetchWeather"/>
       </div>
-      <div class="weather-wrap" v-if="typeof weather.main !='undefined'">
-        <div class="location-box">
-          <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
-          <div class="date">{{ dateBuilder() }}</div>
-        </div>
-        <div class="weather-box">
-          <div class="temp">{{ Math.round(weather.main.temp) }}°C</div>
-          <div class="weather">{{ weather.weather[0].main }}</div>
-          <button class="btn-success" @click="saveWeather">Add weather</button>
+      <div class="weather-wrap" v-if="clicked">
+        <div class="row ">
+          <div class="location-box ml-4 mb-3">
+            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="weather-box">
+              <div class="date">{{ weather1.dt_txt }}</div>
+              <div class="temp">{{ Math.round(this.temp1 - 273) }}°C</div>
+            </div>
+          </div>
+          <div class="location-box ml-4 mb-3">
+            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="weather-box">
+              <div class="date">{{ weather2.dt_txt }}</div>
+              <div class="temp">{{ Math.round(this.temp2 - 273) }}°C</div>
+
+            </div>
+          </div>
+          <div class="location-box ml-4 mb-3">
+            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="weather-box">
+              <div class="date">{{ weather3.dt_txt }}</div>
+              <div class="temp">{{ Math.round(this.temp3 - 273) }}°C</div>
+
+            </div>
+          </div>
+          <div class="location-box ml-4 mb-3">
+            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="weather-box">
+              <div class="date">{{ weather4.dt_txt }}</div>
+              <div class="temp">{{ Math.round(this.temp4 - 273) }}°C</div>
+
+            </div>
+          </div>
         </div>
       </div>
     </main>
@@ -32,43 +56,48 @@ export default {
   components: {NavBar},
   data() {
     return {
-      api_key: '1cf838aa8644549473bdf55ad4147ca1',
+      api_key: '78546815f312ddf800574501b081cb11',
       url_base: 'https://api.openweathermap.org/data/2.5/',
       query: '',
       weather: {},
+      weather1: '',
+      weather2: '',
+      weather3: '',
+      weather4: '',
+      weather5: '',
+      temp1: '',
+      temp2: '',
+      temp3: '',
+      temp4: '',
+      temp5: '',
+      city1: {},
+      clicked:false
     }
   },
   methods: {
     fetchWeather(e) {
       if (e.key == "Enter") {
-        fetch(`${this.url_base}daily&appid=${this.api_key}`)
+        fetch(`${this.url_base}forecast?q=${this.query}&appid=${this.api_key}`)
             .then(res => {
               return res.json();
             }).then(this.setResults);
-
+        this.clicked=true
       }
-      this.$store.state.location = this.query;
-      console.log(this.$store.state.location)
+
     },
     setResults(results) {
       this.weather = results
+      this.weather1 = this.weather.list[7]
+      this.weather2 = this.weather.list[15]
+      this.weather3 = this.weather.list[23]
+      this.weather4 = this.weather.list[31]
+      this.temp1 = this.weather1.main.temp
+      this.temp2 = this.weather2.main.temp
+      this.temp3 = this.weather3.main.temp
+      this.temp4 = this.weather4.main.temp
+      this.city1.name = (this.weather.city.name)
+      this.city1.country = (this.weather.city.country)
     },
-    dateBuilder() {
-      let d = new Date();
-      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
-      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",]
-
-      let day = days[d.getDay()];
-      let date = d.getDate();
-      let month = months[d.getMonth()];
-      let year = d.getFullYear()
-
-      return `${day} ${date} ${month} ${year}`;
-    },
-    saveWeather() {
-      this.$store.state.weather.push(this.weather),
-          console.log(this.$store.state.weather)
-    }
   }
 }
 </script>
@@ -178,4 +207,7 @@ main {
 .navbar {
   opacity: 0.5;
 }
+/*.location-box{*/
+/*  width:250px;*/
+/*}*/
 </style>
