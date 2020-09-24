@@ -7,39 +7,45 @@
                class="search-bar"
                placeholder="Search..."
                v-model="query"
-               @keypress="fetchWeather"/>
+              />
+        <button class="btn-danger mt-2" @click="fetchForecast(query)" >Click</button>
       </div>
-      <div class="weather-wrap" v-if="clicked">
+      <div class="weather-wrap" >
         <div class="row ">
+          <div >
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ weather1.dt_txt }}</div>
-              <div class="temp">{{ Math.round(this.temp1 - 273) }}°C</div>
+              <div class="date">{{ this.$store.state.forecast.list[7].dt_txt }}</div>
+              <div class="temp">{{ Math.round((this.$store.state.forecast.list[7].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ this.$store.state.forecast.list[7].weather[0].description }}</div>
+              <div class="weather">{{ut3}}</div>
+            </div>
+          </div>
+
+          </div>
+          <div class="location-box ml-4 mb-3">
+            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
+            <div class="weather-box">
+              <div class="date">{{ this.$store.state.forecast.list[15].dt_txt }}</div>
+              <div class="temp">{{ Math.round((this.$store.state.forecast.list[15].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ this.$store.state.forecast.list[17].weather[0].description }}</div>
             </div>
           </div>
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ weather2.dt_txt }}</div>
-              <div class="temp">{{ Math.round(this.temp2 - 273) }}°C</div>
-
+              <div class="date">{{ this.$store.state.forecast.list[23].dt_txt }}</div>
+              <div class="temp">{{ Math.round((this.$store.state.forecast.list[23].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ this.$store.state.forecast.list[26].weather[0].description }}</div>
             </div>
           </div>
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ city1.name }},{{ city1.country }}</div>
+            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ weather3.dt_txt }}</div>
-              <div class="temp">{{ Math.round(this.temp3 - 273) }}°C</div>
-
-            </div>
-          </div>
-          <div class="location-box ml-4 mb-3">
-            <div class="location">{{ city1.name }},{{ city1.country }}</div>
-            <div class="weather-box">
-              <div class="date">{{ weather4.dt_txt }}</div>
-              <div class="temp">{{ Math.round(this.temp4 - 273) }}°C</div>
-
+              <div class="date">{{ this.$store.state.forecast.list[31].dt_txt }}</div>
+              <div class="temp">{{ Math.round((this.$store.state.forecast.list[31].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ this.$store.state.forecast.list[34].weather[0].description }}</div>
             </div>
           </div>
         </div>
@@ -50,59 +56,40 @@
 
 <script>
 import NavBar from "@/components/NavBar";
+import {mapActions} from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   name: 'Main',
   components: {NavBar},
   data() {
     return {
-      api_key: '78546815f312ddf800574501b081cb11',
-      url_base: 'https://api.openweathermap.org/data/2.5/',
       query: '',
-      weather: {},
-      weather1: '',
-      weather2: '',
-      weather3: '',
-      weather4: '',
-      weather5: '',
-      temp1: '',
-      temp2: '',
-      temp3: '',
-      temp4: '',
-      temp5: '',
-      city1: {},
-      clicked:false
+      clicked:true,
+      date: new Date(),
+      ut3:''
+
     }
   },
   methods: {
-    fetchWeather(e) {
-      if (e.key == "Enter") {
-        fetch(`${this.url_base}forecast?q=${this.query}&appid=${this.api_key}`)
-            .then(res => {
-              return res.json();
-            }).then(this.setResults);
-        this.clicked=true
-      }
-
-    },
-    setResults(results) {
-      this.weather = results
-      this.weather1 = this.weather.list[7]
-      this.weather2 = this.weather.list[15]
-      this.weather3 = this.weather.list[23]
-      this.weather4 = this.weather.list[31]
-      this.temp1 = this.weather1.main.temp
-      this.temp2 = this.weather2.main.temp
-      this.temp3 = this.weather3.main.temp
-      this.temp4 = this.weather4.main.temp
-      this.city1.name = (this.weather.city.name)
-      this.city1.country = (this.weather.city.country)
-    },
-  }
+    ...mapState([]),
+    ...mapActions([
+      'fetchForecast'
+    ]),
+    setDate(){
+     this.date.setDate(this.date.getDate() + 1)
+     // ? this.tommorow=this.date.getFullYear() + '-' + this.date.getMonth()+'-' +this.date.getDay()+ ' '+'15:00:00'
+this.ut3=Math.round(this.date.getTime()/1000)
+      return this.ut3
+    }
+  },
+  created() {
+    this.fetchForecast()
+  },
 }
 </script>
 
-<style>
+<style scoped>
 * {
   margin: 0;
   padding: 0;

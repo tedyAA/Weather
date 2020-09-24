@@ -3,13 +3,13 @@
     <nav-bar/>
     <main>
       <div class="row ">
-        <div v-for="loc in this.$store.state.weather" :key="loc">
+        <div v-for="loc in this.$store.state.locations" :key="loc">
         <div class="location-box ml-4 mb-3">
-        <div class="location">{{ loc.name }},{{ loc.sys.country }} </div>
-        <div class="date">{{ dateBuilder() }}</div>
+          <div class="location">{{ loc.name }},{{loc.sys.country}}</div>
+          <div class="date">{{ dateBuilder() }}</div>
           <div class="weather-box">
-            <div class="temp">{{ Math.round(loc.main.temp) }}°C</div>
-            <div class="weather">{{ loc.weather[0].main }}</div>
+<!--            <div class="temp">{{ Math.round(loc.main.temp) }}°C</div>-->
+<!--            <div class="weather">{{ loc.weather[0].main }}</div>-->
           </div>
         </div>
         </div>
@@ -26,6 +26,7 @@ export default {
   components: {NavBar},
   data() {
     return {
+      locations: this.$store.state.locations
     }
   },
   methods: {
@@ -45,7 +46,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .locations{
   background-image: url("../assets/cold-bg.jpg");
   background-size: cover;

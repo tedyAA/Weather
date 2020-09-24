@@ -1,5 +1,5 @@
 <template>
-  <div id="ap" :class="typeof  weather.main !='undefined' && weather.main.temp > 15 ? 'warm' : ''">
+  <div id="ap" :class="typeof  this.$store.state.weather.main !='undefined' && this.$store.state.weather.main.temp > 15 ? 'warm' : ''">
     <nav-bar/>
     <main>
       <div class="search-box mt-5">
@@ -7,16 +7,17 @@
                class="search-bar"
                placeholder="Search..."
                v-model="query"
-               @keypress="fetchWeather"/>
+        />
+        <button class="btn-danger mt-2" @click="fetchWeather(query)" >Click</button>
       </div>
-      <div class="weather-wrap" v-if="typeof weather.main !='undefined'">
+      <div class="weather-wrap" v-if="typeof this.$store.state.weather.main !='undefined'">
         <div class="location-box">
-          <div class="location">{{ weather.name }}, {{ weather.sys.country }}</div>
+          <div class="location">{{ this.$store.state.weather.name }}, {{ this.$store.state.weather.sys.country }}</div>
           <div class="date">{{ dateBuilder() }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ Math.round(weather.main.temp) }}°C</div>
-          <div class="weather">{{ weather.weather[0].main }}</div>
+          <div class="temp">{{ Math.round(this.$store.state.weather.main.temp) }}°C</div>
+          <div class="weather">{{ this.$store.state.weather.weather[0].main }}</div>
           <button class="btn-success" @click="saveWeather">Add weather</button>
         </div>
       </div>
@@ -26,49 +27,41 @@
 
 <script>
 import NavBar from "@/components/NavBar";
+import {mapActions} from 'vuex'
+import {mapState} from 'vuex'
+
 export default {
   name: 'Main',
   components: {NavBar},
   data() {
     return {
-      api_key: '1cf838aa8644549473bdf55ad4147ca1',
-      url_base: 'https://api.openweathermap.org/data/2.5/',
       query: '',
-      weather:{},
     }
   },
   methods: {
-    fetchWeather(e) {
-      if (e.key == "Enter") {
-        fetch(`${this.url_base}weather?q= ${this.query}&units=metric&APPID=${this.api_key}`)
-            .then(res => {
-              return res.json();
-            }).then(this.setResults);
+    ...mapState([]),
+    ...mapActions([
+      'fetchWeather'
+    ]),
 
-      }
-      this.$store.state.location=this.query;
-      console.log(this.$store.state.location)
-    },
-    setResults(results) {
-      this.weather=results
-    },
     dateBuilder() {
       let d = new Date();
       let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
       let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",]
-
-      let day=days[d.getDay()];
-      let date=d.getDate();
-      let month=months[d.getMonth()];
-      let year=d.getFullYear()
-
-      return`${day} ${date} ${month} ${year}`;
+      let day = days[d.getDay()];
+      let date = d.getDate();
+      let month = months[d.getMonth()];
+      let year = d.getFullYear()
+      return `${day} ${date} ${month} ${year}`;
     },
-    saveWeather(){
-      this.$store.state.weather.push(this.weather),
-          console.log(this.$store.state.weather)
+    saveWeather: function () {
+     this.$store.state.locations.push(this.$store.state.weather)
     }
-  }
+  },
+  created() {
+
+    this.fetchWeather()
+  },
 }
 </script>
 
@@ -89,14 +82,14 @@ body {
   background-position: bottom;
   transition: 0.4s;
 }
-#ap.warm{
+
+#ap.warm {
   background-image: url("../assets/warm-bg.jpg");
 }
 
 main {
   min-height: 100vh;
   padding: 25px;
-
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
 }
 
@@ -109,15 +102,12 @@ main {
   display: block;
   width: 100%;
   padding: 15px;
-
   color: #313131;
   font-size: 20px;
-
   appearance: none;
   border: none;
   outline: none;
   background: none;
-
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0px 16px 0px 16px;
@@ -156,12 +146,10 @@ main {
   color: #FFF;
   font-size: 102px;
   font-weight: 900;
-
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.25);
   border-radius: 16px;
   margin: 30px 0px;
-
   box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
@@ -172,7 +160,8 @@ main {
   font-style: italic;
   text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
-.navbar{
+
+.navbar {
   opacity: 0.5;
 }
 </style>
