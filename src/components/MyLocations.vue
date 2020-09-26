@@ -3,16 +3,16 @@
     <nav-bar/>
     <main>
       <div class="row ">
-        <div v-for="loc in this.$store.state.locations" :key="loc">
+<!--        <div v-for="loc in this.$store.state.locations" :key="loc">-->
         <div class="location-box ml-4 mb-3">
-          <div class="location">{{ loc.name }},{{loc.sys.country}}</div>
+          <div class="location">{{ this.$store.state.locations.city.name }},{{this.$store.state.locations.city.country}}</div>
           <div class="date">{{ dateBuilder() }}</div>
           <div class="weather-box">
-<!--            <div class="temp">{{ Math.round(loc.main.temp) }}°C</div>-->
-<!--            <div class="weather">{{ loc.weather[0].main }}</div>-->
+            <div class="temp">{{ Math.round((this.$store.state.locations.list[0].main.temp - 272)) }}°C</div>
+            <div class="weather">{{ this.$store.state.locations.list[0].weather[0].description }}</div>
           </div>
         </div>
-        </div>
+<!--        </div>-->
       </div>
     </main>
   </div>
@@ -26,7 +26,6 @@ export default {
   components: {NavBar},
   data() {
     return {
-      locations: this.$store.state.locations
     }
   },
   methods: {

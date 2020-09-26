@@ -22,7 +22,6 @@
               <div class="weather">{{ut3}}</div>
             </div>
           </div>
-
           </div>
           <div class="location-box ml-4 mb-3">
             <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>

@@ -10,15 +10,15 @@
         />
         <button class="btn-danger mt-2" @click="fetchWeather(query)" >Click</button>
       </div>
-      <div class="weather-wrap" v-if="typeof this.$store.state.weather.main !='undefined'">
+      <div class="weather-wrap" v-if="typeof this.$store.state.weather.list[0].main !='undefined'">
         <div class="location-box">
-          <div class="location">{{ this.$store.state.weather.name }}, {{ this.$store.state.weather.sys.country }}</div>
+          <div class="location">{{ this.$store.state.weather.city.name}},{{ this.$store.state.weather.city.country }}</div>
           <div class="date">{{ dateBuilder() }}</div>
         </div>
         <div class="weather-box">
-          <div class="temp">{{ Math.round(this.$store.state.weather.main.temp) }}°C</div>
-          <div class="weather">{{ this.$store.state.weather.weather[0].main }}</div>
-          <button class="btn-success" @click="saveWeather">Add weather</button>
+          <div class="temp">{{ Math.round((this.$store.state.weather.list[0].main.temp - 272)) }}°C</div>
+          <div class="weather">{{ this.$store.state.weather.list[0].weather[0].description }}</div>
+          <button class="btn-success" @click="setWeather()">Set as your location</button>
         </div>
       </div>
     </main>
@@ -35,13 +35,15 @@ export default {
   components: {NavBar},
   data() {
     return {
-      query: '',
+      query: 'sofia',
+
     }
   },
   methods: {
     ...mapState([]),
     ...mapActions([
-      'fetchWeather'
+      'fetchWeather',
+        'setWeather'
     ]),
 
     dateBuilder() {
@@ -54,12 +56,9 @@ export default {
       let year = d.getFullYear()
       return `${day} ${date} ${month} ${year}`;
     },
-    saveWeather: function () {
-     this.$store.state.locations.push(this.$store.state.weather)
-    }
+
   },
   created() {
-
     this.fetchWeather()
   },
 }
