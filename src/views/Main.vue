@@ -18,7 +18,7 @@
         <div class="weather-box">
           <div class="temp">{{ Math.round((this.$store.state.weather.list[0].main.temp - 272)) }}°C</div>
           <div class="weather">{{ this.$store.state.weather.list[0].weather[0].description }}</div>
-          <button class="btn-success" @click="setWeather()">Set as your location</button>
+          <button class="btn-success" @click="saveWeather()">Set as your location</button>
         </div>
       </div>
     </main>
@@ -43,7 +43,7 @@ export default {
     ...mapState([]),
     ...mapActions([
       'fetchWeather',
-        'setWeather'
+        'saveWeather'
     ]),
 
     dateBuilder() {

@@ -41,7 +41,7 @@ export default new Vuex.Store({
             commit('setForecast', response.data)
             console.log(response.data)
         },
-        async setWeather({commit}){
+        async saveWeather({commit}){
             commit('saveWeather')
         }
     }
