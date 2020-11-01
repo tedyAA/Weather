@@ -14,37 +14,36 @@
         <div class="row ">
           <div >
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
+            <div class="location">{{ forecast.city.name}},{{forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ this.$store.state.forecast.list[7].dt_txt }}</div>
-              <div class="temp">{{ Math.round((this.$store.state.forecast.list[7].main.temp - 272)) }}°C</div>
-              <div class="weather">{{ this.$store.state.forecast.list[7].weather[0].description }}</div>
-              <div class="weather">{{ut3}}</div>
+              <div class="date">{{ forecast.list[7].dt_txt }}</div>
+              <div class="temp">{{ Math.round((forecast.list[7].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ forecast.list[7].weather[0].description }}</div>
             </div>
           </div>
           </div>
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
+            <div class="location">{{ forecast.city.name}},{{forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ this.$store.state.forecast.list[15].dt_txt }}</div>
-              <div class="temp">{{ Math.round((this.$store.state.forecast.list[15].main.temp - 272)) }}°C</div>
-              <div class="weather">{{ this.$store.state.forecast.list[17].weather[0].description }}</div>
+              <div class="date">{{ forecast.list[15].dt_txt }}</div>
+              <div class="temp">{{ Math.round((forecast.list[15].main.temp - 272)) }}°C</div>
+              <div class="weather">{{forecast.list[17].weather[0].description }}</div>
             </div>
           </div>
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
+            <div class="location">{{ forecast.city.name}},{{ forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ this.$store.state.forecast.list[23].dt_txt }}</div>
-              <div class="temp">{{ Math.round((this.$store.state.forecast.list[23].main.temp - 272)) }}°C</div>
-              <div class="weather">{{ this.$store.state.forecast.list[26].weather[0].description }}</div>
+              <div class="date">{{ forecast.list[23].dt_txt }}</div>
+              <div class="temp">{{ Math.round((forecast.list[23].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ forecast.list[26].weather[0].description }}</div>
             </div>
           </div>
           <div class="location-box ml-4 mb-3">
-            <div class="location">{{ this.$store.state.forecast.city.name}},{{ this.$store.state.forecast.city.country }}</div>
+            <div class="location">{{ forecast.city.name}},{{ forecast.city.country }}</div>
             <div class="weather-box">
-              <div class="date">{{ this.$store.state.forecast.list[31].dt_txt }}</div>
-              <div class="temp">{{ Math.round((this.$store.state.forecast.list[31].main.temp - 272)) }}°C</div>
-              <div class="weather">{{ this.$store.state.forecast.list[34].weather[0].description }}</div>
+              <div class="date">{{ forecast.list[31].dt_txt }}</div>
+              <div class="temp">{{ Math.round((forecast.list[31].main.temp - 272)) }}°C</div>
+              <div class="weather">{{ forecast.list[34].weather[0].description }}</div>
             </div>
           </div>
         </div>
@@ -63,27 +62,19 @@ export default {
   components: {NavBar},
   data() {
     return {
-      query: '',
-      clicked:true,
-      date: new Date(),
-      ut3:''
-
+      query: 'sofia',
     }
   },
   methods: {
-    ...mapState([]),
     ...mapActions([
       'fetchForecast'
     ]),
-    setDate(){
-     this.date.setDate(this.date.getDate() + 1)
-     // ? this.tommorow=this.date.getFullYear() + '-' + this.date.getMonth()+'-' +this.date.getDay()+ ' '+'15:00:00'
-this.ut3=Math.round(this.date.getTime()/1000)
-      return this.ut3
-    }
   },
+  computed: mapState({
+    forecast: state => state.forecast,
+  }),
   created() {
-    this.fetchForecast()
+    this.fetchForecast(this.query)
   },
 }
 </script>
@@ -91,7 +82,6 @@ this.ut3=Math.round(this.date.getTime()/1000)
 <style scoped>
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 

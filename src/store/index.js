@@ -14,6 +14,7 @@ export default new Vuex.Store({
         locations: {},
         api_key: '1cf838aa8644549473bdf55ad4147ca1',
         url_base: 'https://api.openweathermap.org/data/2.5/',
+
     }),
     mutations: {
         setWeather(state, results) {
@@ -23,11 +24,10 @@ export default new Vuex.Store({
             state.forecast = results
             console.log(state.forecast)
         },
-        saveWeather(state){
-            let loc = state.weather
-            state.locations=loc
+        saveWeather(state, results){
+           state.locations=results
             console.log(state.locations)
-        }
+        },
     },
     actions: {
 
@@ -41,9 +41,10 @@ export default new Vuex.Store({
             commit('setForecast', response.data)
             console.log(response.data)
         },
-        async saveWeather({commit}){
-            commit('saveWeather')
-        }
+        async saveWeather({commit},query){
+            const response = await axios.get(`${this.state.url_base}weather?q=${query}&appid=${this.state.api_key}`)
+            commit('saveWeather', response.data)
+        },
     }
 
 })

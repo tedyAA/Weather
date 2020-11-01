@@ -2,17 +2,40 @@
   <div class="locations">
     <nav-bar/>
     <main>
-      <div class="row ">
-<!--        <div v-for="loc in this.$store.state.locations" :key="loc">-->
-        <div class="location-box ml-4 mb-3">
-          <div class="location">{{ this.$store.state.locations.city.name }},{{this.$store.state.locations.city.country}}</div>
-          <div class="date">{{ dateBuilder() }}</div>
-          <div class="weather-box">
-            <div class="temp">{{ Math.round((this.$store.state.locations.list[0].main.temp - 272)) }}°C</div>
-            <div class="weather">{{ this.$store.state.locations.list[0].weather[0].description }}</div>
+      <div id="background" class="background">
+        <section id='itroBackground' class="intro">
+          <div class="inner">
+            <div class="content">
+              <h1>Current Weather On Saved Location</h1>
+              <div class="weather-app">
+                <div class="left">
+                  <div class="location"><span id="loc">{{ $store.state.locations.name }}</span></div>
+                  <div id="toggleCelsius" class="temperature-celsius">
+                    <span id="temperatureCelsius">{{ Math.round($store.state.locations.main.temp - 272) }}C</span></div>
+                </div>
+                <div class="right">
+                  <div class="top">
+                    <img id="icon" width="150px"
+                         :src="'http://openweathermap.org/img/w/'+$store.state.locations.weather[0].icon+'.png'"/>
+                    <p id="description"></p>
+                  </div>
+                  <div class="bottom">
+                    <div class="humidity">
+								<span>Humidity:
+									<span id="humidity">{{$store.state.locations.main.humidity}}</span>%
+									<span>💧</span>
+								</span>
+                    </div>
+                    <div class="wind">
+                      <span>Wind: <span id="wind">{{$store.state.locations.wind.speed}}</span> m/h | Presure:
+                        <span id="direction">{{$store.state.locations.main.preasure}}</span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-<!--        </div>-->
+        </section>
       </div>
     </main>
   </div>
@@ -20,15 +43,18 @@
 
 <script>
 import NavBar from "@/components/NavBar";
+import {mapActions} from 'vuex'
 
 export default {
   name: 'App',
   components: {NavBar},
   data() {
-    return {
-    }
+    return {}
   },
   methods: {
+    ...mapActions([
+       'deleteLocation'
+    ]),
     dateBuilder() {
       let d = new Date();
       let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
@@ -46,15 +72,15 @@ export default {
 </script>
 
 <style scoped>
-.locations{
+.locations {
   background-image: url("../assets/cold-bg.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
 }
+
 * {
   margin: 0;
-  padding: 0;
   box-sizing: border-box;
 }
 
@@ -69,75 +95,23 @@ main {
   background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.75));
 }
 
-.search-box .search-bar {
+.navbar {
+  opacity: 0.5;
+}
+
+.background {
   display: block;
   width: 100%;
   padding: 15px;
-
   color: #313131;
   font-size: 20px;
-
   appearance: none;
   border: none;
   outline: none;
   background: none;
-
   box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0px 16px 0px 16px;
   transition: 0.4s;
-}
-
-.search-box .search-bar:focus {
-  box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.75);
-  border-radius: 16px 0px 16px 0px;
-}
-
-.location-box .location {
-  color: #FFF;
-  font-size: 32px;
-  font-weight: 500;
-  text-align: center;
-  text-shadow: 1px 3px rgba(0, 0, 0, 0.25);
-}
-
-.location-box .date {
-  color: #FFF;
-  font-size: 20px;
-  font-weight: 300;
-  font-style: italic;
-  text-align: center;
-}
-
-.weather-box {
-  text-align: center;
-}
-
-.weather-box .temp {
-  display: inline-block;
-  padding: 10px 25px;
-  color: #FFF;
-  font-size: 102px;
-  font-weight: 900;
-
-  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-  background-color: rgba(255, 255, 255, 0.25);
-  border-radius: 16px;
-  margin: 30px 0px;
-
-  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-}
-
-.weather-box .weather {
-  color: #FFF;
-  font-size: 48px;
-  font-weight: 700;
-  font-style: italic;
-  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
-}
-
-.navbar {
-  opacity: 0.5;
 }
 </style>

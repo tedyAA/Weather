@@ -27,7 +27,7 @@ export default {
   name: "NavBar",
   methods:{
     main(){
-      this.$router.push('/main')
+      this.$router.push('/')
     },
     loc(){
       this.$router.push('/loc')

@@ -1,5 +1,6 @@
 <template>
-  <div id="ap" :class="typeof  this.$store.state.weather.main !='undefined' && this.$store.state.weather.main.temp > 15 ? 'warm' : ''">
+  <div id="ap" :class="typeof this.$store.state.weather.list[0].main !='undefined'
+  && this.$store.state.weather.list[0].main.temp - 272 > 15 ? 'warm' : ''">
     <nav-bar/>
     <main>
       <div class="search-box mt-5">
@@ -10,7 +11,7 @@
         />
         <button class="btn-danger mt-2" @click="fetchWeather(query)" >Click</button>
       </div>
-      <div class="weather-wrap" v-if="typeof this.$store.state.weather.list[0].main !='undefined'">
+      <div class="weather-wrap" v-if="this.$store.state.weather.list && typeof this.$store.state.weather.list[0].main !='undefined'">
         <div class="location-box">
           <div class="location">{{ this.$store.state.weather.city.name}},{{ this.$store.state.weather.city.country }}</div>
           <div class="date">{{ dateBuilder() }}</div>
@@ -18,7 +19,7 @@
         <div class="weather-box">
           <div class="temp">{{ Math.round((this.$store.state.weather.list[0].main.temp - 272)) }}°C</div>
           <div class="weather">{{ this.$store.state.weather.list[0].weather[0].description }}</div>
-          <button class="btn-success" @click="saveWeather()">Set as your location</button>
+          <button class="btn-success" @click="saveWeather(query)">Set as your location</button>
         </div>
       </div>
     </main>
@@ -43,7 +44,7 @@ export default {
     ...mapState([]),
     ...mapActions([
       'fetchWeather',
-        'saveWeather'
+      'saveWeather'
     ]),
 
     dateBuilder() {
@@ -59,7 +60,7 @@ export default {
 
   },
   created() {
-    this.fetchWeather()
+    this.fetchWeather(this.query)
   },
 }
 </script>
