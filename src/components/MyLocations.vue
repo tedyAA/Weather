@@ -1,82 +1,100 @@
 <template>
-  <div class="locations">
-    <nav-bar/>
-    <main>
-      <div id="background" class="background">
-        <section id='itroBackground' class="intro">
-          <div class="inner">
-            <div class="content">
-              <h1>Current Weather On Saved Location</h1>
-              <div class="weather-app">
-                <div class="left">
-                  <div class="location"><span id="loc">{{ $store.state.locations.name }}</span></div>
-                  <div id="toggleCelsius" class="temperature-celsius">
-                    <span id="temperatureCelsius">{{ Math.round($store.state.locations.main.temp - 272) }}C</span></div>
-                </div>
-                <div class="right">
-                  <div class="top">
-                    <img id="icon" width="150px"
-                         :src="'http://openweathermap.org/img/w/'+$store.state.locations.weather[0].icon+'.png'"/>
-                    <p id="description"></p>
+  <div id="ap">
+    <div class="locations">
+      <nav-bar/>
+      <main>
+        <div id="background" class="background">
+          <section id="itroBackground" class="intro">
+            <div class="inner">
+              <div class="content">
+                <h1>Current Weather On Saved Location</h1>
+                <div class="weather-app">
+                  <div class="left">
+                    <div class="location"><span id="loc">{{ locations.data.city.name }}</span></div>
+                    <div id="toggleCelsius" class="temperature-celsius">
+                      <span id="temperatureCelsius">{{ Math.round(locations.data.list[0].main.temp - 272) }}C</span>
                   </div>
-                  <div class="bottom">
-                    <div class="humidity">
+                  <div class="left">
+                    <div class="top">
+                      <img id="icon" width="150px"
+                           :src="'http://openweathermap.org/img/w/'+locations.data.list[0].weather[0].icon+'.png'"/>
+                      <p id="description"></p>
+                    </div>
+                    <div class="bottom">
+                      <div class="humidity">
 								<span>Humidity:
-									<span id="humidity">{{$store.state.locations.main.humidity}}</span>%
+									<span id="humidity">{{ locations.data.list[0].main.humidity }}</span>%
 									<span>💧</span>
 								</span>
+                      </div>
+                      <div class="wind">
+                      <span>Wind: <span id="wind">{{ locations.data.list[0].wind.speed }}</span> m/h | Presure:
+                        <span id="direction">{{ locations.data.list[0].main.pressure }}</span></span>
+                      </div>
                     </div>
-                    <div class="wind">
-                      <span>Wind: <span id="wind">{{$store.state.locations.wind.speed}}</span> m/h | Presure:
-                        <span id="direction">{{$store.state.locations.main.preasure}}</span></span>
-                    </div>
+                  </div>
+                  <div class="float-right">
+                  </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </section>
-      </div>
-    </main>
+          </section>
+        </div>
+      </main>
+    </div>
   </div>
 </template>
 
 <script>
 import NavBar from "@/components/NavBar";
 import {mapActions} from 'vuex'
+import {mapState} from 'vuex'
 
 export default {
   name: 'App',
   components: {NavBar},
   data() {
-    return {}
+    return {
+      lat: 0,
+      lng: 0,
+      location: ''
+    }
   },
   methods: {
     ...mapActions([
-       'deleteLocation'
+      'saveWeather'
     ]),
-    dateBuilder() {
-      let d = new Date();
-      let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",]
-      let days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday",]
 
-      let day = days[d.getDay()];
-      let date = d.getDate();
-      let month = months[d.getMonth()];
-      let year = d.getFullYear()
+  },
+  computed: {
+    ...mapState({
+      locations: state => state.locations
+    })
+  },
+  created() {
+    this.$getLocation({})
+        .then(coordinates => {
+          this.saveWeather(coordinates);
+        })
 
-      return `${day} ${date} ${month} ${year}`;
-    },
   }
 }
 </script>
 
 <style scoped>
 .locations {
-  background-image: url("../assets/cold-bg.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;
+}
+
+#ap.warm {
+  background-image: url("../assets/sun.jpg");
+}
+
+#ap.r {
+  background-image: url("../assets/warm-bg.jpg");
 }
 
 * {
@@ -114,4 +132,5 @@ main {
   border-radius: 0px 16px 0px 16px;
   transition: 0.4s;
 }
+
 </style>

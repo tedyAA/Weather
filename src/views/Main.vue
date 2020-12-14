@@ -1,6 +1,6 @@
 <template>
   <div id="ap" :class="typeof this.$store.state.weather.list[0].main !='undefined'
-  && this.$store.state.weather.list[0].main.temp - 272 > 15 ? 'warm' : ''">
+  && this.$store.state.weather.list[0].main.temp - 272 > 25 ? 'warm' : (this.$store.state.weather.list[0].main.temp - 272 <10? '':'r')">
     <nav-bar/>
     <main>
       <div class="search-box mt-5">
@@ -9,7 +9,7 @@
                placeholder="Search..."
                v-model="query"
         />
-        <button class="btn-danger mt-2" @click="fetchWeather(query)" >Click</button>
+        <button class="btn btn-success mt-2" @click="fetchWeather(query)" >Search</button>
       </div>
       <div class="weather-wrap" v-if="this.$store.state.weather.list && typeof this.$store.state.weather.list[0].main !='undefined'">
         <div class="location-box">
@@ -19,8 +19,11 @@
         <div class="weather-box">
           <div class="temp">{{ Math.round((this.$store.state.weather.list[0].main.temp - 272)) }}°C</div>
           <div class="weather">{{ this.$store.state.weather.list[0].weather[0].description }}</div>
-          <button class="btn-success" @click="saveWeather(query)">Set as your location</button>
+          <button class="btn btn-success" @click="saveWeather(query)">Set as your location</button>
         </div>
+      </div>
+      <div v-else>
+        <p>Weather not found</p>
       </div>
     </main>
   </div>
@@ -84,6 +87,9 @@ body {
 }
 
 #ap.warm {
+  background-image: url("../assets/sun.jpg");
+}
+#ap.r {
   background-image: url("../assets/warm-bg.jpg");
 }
 

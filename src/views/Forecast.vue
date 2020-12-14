@@ -8,7 +8,7 @@
                placeholder="Search..."
                v-model="query"
               />
-        <button class="btn-danger mt-2" @click="fetchForecast(query)" >Click</button>
+        <button class="btn btn-success mt-2" @click="fetchForecast(query)" >Search</button>
       </div>
       <div class="weather-wrap" >
         <div class="row ">
@@ -90,7 +90,7 @@ body {
 }
 
 #ap {
-  background-image: url("../assets/cold-bg.jpg");
+  background-image: url("../assets/sun.jpg");
   background-size: cover;
   background-position: bottom;
   transition: 0.4s;

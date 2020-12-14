@@ -1,6 +1,6 @@
 <template>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">
+    <a class="navbar-brand" @click="main">
       <img src="../assets/logo.png" width="30" height="30" class="d-inline-block align-top" alt="">
       Weather App
     </a>
