@@ -4,42 +4,28 @@
       <nav-bar/>
       <main>
         <div id="background" class="background">
-          <section id="itroBackground" class="intro">
-            <div class="inner">
-              <div class="content">
-                <h1>Current Weather On Saved Location</h1>
-                <div class="weather-app">
-                  <div class="left">
-                    <div class="location"><span id="loc">{{ locations.data.city.name }}</span></div>
-                    <div id="toggleCelsius" class="temperature-celsius">
-                      <span id="temperatureCelsius">{{ Math.round(locations.data.list[0].main.temp - 272) }}C</span>
-                  </div>
-                  <div class="left">
-                    <div class="top">
-                      <img id="icon" width="150px"
-                           :src="'http://openweathermap.org/img/w/'+locations.data.list[0].weather[0].icon+'.png'"/>
-                      <p id="description"></p>
-                    </div>
-                    <div class="bottom">
-                      <div class="humidity">
-								<span>Humidity:
+          <h1 class="location">
+            <span>{{locations.data.city.country}}, </span>
+            <span id="loc">{{ locations.data.city.name }}</span></h1>
+          <div>
+            <span><h3>{{locations.data.list[0].weather[0].description}}</h3></span>
+          </div>
+          <div class="temp">
+                       <span><img id="icon" width="150px"
+                                  :src="'http://openweathermap.org/img/w/'+locations.data.list[0].weather[0].icon+'.png'"/></span>
+            <span id="temperatureCelsius">{{ Math.round(locations.data.list[0].main.temp - 272) }}C°</span>
+          </div>
+          <span class="left">
+            <span> </span>
+          </span>
+          <div class="wind">
+                      <span>Wind: <span id="wind">{{ locations.data.list[0].wind.speed }}</span> m/h | Presure:
+                        <span id="direction">{{ locations.data.list[0].main.pressure }}</span></span>
+            <span> | Humidity:
 									<span id="humidity">{{ locations.data.list[0].main.humidity }}</span>%
 									<span>💧</span>
 								</span>
-                      </div>
-                      <div class="wind">
-                      <span>Wind: <span id="wind">{{ locations.data.list[0].wind.speed }}</span> m/h | Presure:
-                        <span id="direction">{{ locations.data.list[0].main.pressure }}</span></span>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="float-right">
-                  </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          </div>
         </div>
       </main>
     </div>
@@ -119,7 +105,9 @@ main {
 
 .background {
   display: block;
-  width: 100%;
+  width: 80%;
+  margin-left: 10%;
+  margin-top: 5%;
   padding: 15px;
   color: #313131;
   font-size: 20px;
@@ -131,6 +119,19 @@ main {
   background-color: rgba(255, 255, 255, 0.5);
   border-radius: 0px 16px 0px 16px;
   transition: 0.4s;
+}
+
+.temp {
+  display: inline-block;
+  padding: 10px 25px;
+  color: #FFF;
+  font-size: 102px;
+  font-weight: 900;
+  text-shadow: 3px 6px rgba(0, 0, 0, 0.25);
+  background-color: rgba(255, 255, 255, 0.25);
+  border-radius: 16px;
+  margin: 30px 0px;
+  box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
 
 </style>

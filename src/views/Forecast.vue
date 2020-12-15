@@ -12,7 +12,7 @@
       </div>
       <div class="weather-wrap" >
         <div class="row ">
-          <div >
+          <div>
           <div class="location-box ml-4 mb-3">
             <div class="location">{{ forecast.city.name}},{{forecast.city.country }}</div>
             <div class="weather-box">
@@ -183,7 +183,7 @@ main {
 .navbar {
   opacity: 0.5;
 }
-/*.location-box{*/
-/*  width:250px;*/
-/*}*/
+.weather-wrap{
+  width:100%
+}
 </style>
