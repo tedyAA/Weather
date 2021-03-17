@@ -4,6 +4,7 @@ import Main from "@/views/Main";
 import Locations from "@/views/Locations";
 import Forecast from "@/views/Forecast";
 
+
 Vue.use(VueRouter)
 
 const routes = [
