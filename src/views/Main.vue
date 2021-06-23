@@ -8,6 +8,7 @@
                class="search-bar"
                placeholder="Search..."
                v-model="query"
+               @keypress="fetchWeather(query)"
         />
         <button class="btn btn-success mt-2" @click="fetchWeather(query)" >Search</button>
       </div>
@@ -39,8 +40,8 @@ export default {
   components: {NavBar},
   data() {
     return {
-      query: 'sofia',
-
+      query: '',
+      beforeQuery:'sofia'
     }
   },
   methods: {
@@ -62,7 +63,7 @@ export default {
 
   },
   created() {
-    this.fetchWeather(this.query)
+    this.fetchWeather(this.beforeQuery)
   },
 }
 </script>
@@ -86,10 +87,10 @@ body {
 }
 
 #ap.warm {
-  background-image: url("../assets/sun.jpg");
+  background-image: url("../assets/warm-bg.jpg");
 }
 #ap.r {
-  background-image: url("../assets/warm-bg.jpg");
+  background-image: url("../assets/cold-bg.jpg");
 }
 
 main {

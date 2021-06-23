@@ -26,8 +26,8 @@ export default new Vuex.Store({
         },
         saveWeather(state, results){
            state.locations=results
-            console.log(state.locations)
-            // console.log(state.locations.data.city.name)
+           console.log(state.locations)
+            //console.log()
         },
     },
     actions: {

@@ -1,45 +1,50 @@
 <template>
-  <div id="ap">
-    <div class="locations">
-      <nav-bar/>
-      <main>
-        <div id="background" class="background">
-          <h1 class="location">
-            <span>{{locations.data.city.country}}, </span>
-            <span id="loc">{{ locations.data.city.name }}</span></h1>
-          <div>
-            <span><h3>{{locations.data.list[0].weather[0].description}}</h3></span>
-          </div>
-          <div class="temp">
+  <div>
+    <div class="row">
+      <div class="col-sm">
+        <h1 class="location">
+          <span>{{locations.data.city.country}}, </span>
+          <span id="loc">{{ locations.data.city.name }}</span></h1>
+        <div>
+          <span><h3>{{locations.data.list[0].weather[0].description}}</h3></span>
+        </div>
+        <div class="temp">
                        <span><img id="icon" width="150px"
                                   :src="'http://openweathermap.org/img/w/'+locations.data.list[0].weather[0].icon+'.png'"/></span>
-            <span id="temperatureCelsius">{{ Math.round(locations.data.list[0].main.temp - 272) }}C°</span>
-          </div>
-          <span class="left">
-            <span> </span>
-          </span>
-          <div class="wind">
-                      <span>Wind: <span id="wind">{{ locations.data.list[0].wind.speed }}</span> m/h | Presure:
-                        <span id="direction">{{ locations.data.list[0].main.pressure }}</span></span>
-            <span> | Humidity:
-									<span id="humidity">{{ locations.data.list[0].main.humidity }}</span>%
-									<span>💧</span>
-								</span>
-          </div>
+          <span id="temperatureCelsius">{{ Math.round(locations.data.list[0].main.temp - 272) }}C°</span>
         </div>
-      </main>
+      </div>
+      <div class="col-sm">
+        <table class="table mt-5">
+          <thead>
+          <tr>
+            <th scope="col">Wind Speed</th>
+            <th scope="col">{{ locations.data.list[0].wind.speed }} m/h </th>
+          </tr>
+          </thead>
+          <thead>
+          <tr>
+            <th scope="col">Presure</th>
+            <th scope="col">{{ locations.data.list[0].main.pressure }}</th>
+          </tr>
+          </thead>
+          <thead>
+          <tr>
+            <th scope="col">Humidity</th>
+            <th scope="col">{{ locations.data.list[0].main.humidity }} % <span>💧</span></th>
+          </tr>
+          </thead>
+        </table>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import NavBar from "@/components/NavBar";
-import {mapActions} from 'vuex'
-import {mapState} from 'vuex'
+import {mapActions, mapState} from "vuex";
 
 export default {
-  name: 'App',
-  components: {NavBar},
+  name: "MyLocationsCard",
   data() {
     return {
       lat: 0,
@@ -105,8 +110,6 @@ main {
 
 .background {
   display: block;
-  width: 80%;
-  margin-left: 10%;
   margin-top: 5%;
   padding: 15px;
   color: #313131;
@@ -133,5 +136,4 @@ main {
   margin: 30px 0px;
   box-shadow: 3px 6px rgba(0, 0, 0, 0.25);
 }
-
 </style>
